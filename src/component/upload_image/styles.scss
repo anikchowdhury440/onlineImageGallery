@@ -1,0 +1,31 @@
+.header-text {
+    font-size: 20px;
+    font-weight: bold;
+    margin: 40 auto;
+    text-align: center;
+
+    &-view {
+        border-bottom: solid 1px;
+        border-color: #D3D3D3;
+    }
+}
+
+.card-view {
+    display: flex;
+    justify-content: center;
+    margin : 20px;
+}
+
+.input-file-card {
+    width : fit-content;
+}
+
+.upload-button {
+    height: 25px;
+}
+
+.upload-button-view {
+    display: flex;
+    justify-content: center;
+    margin: 10px;
+}
