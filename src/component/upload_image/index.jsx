@@ -3,6 +3,7 @@ import {Card, CardContent, Button} from '@material-ui/core';
 import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 import './styles.scss'
 import ShowImage from '../show_image';
+import DatabaseServices from '../../services/database-services';
 
 let fileObj = [];
 let fileArray = [];
@@ -18,14 +19,35 @@ class UploadImage extends Component {
         }
     }
 
+    componentDidMount = () => {
+        // DatabaseServices.getImages()
+        // .then(responce => {
+        //     console.log(responce);
+        // })
+        // .catch(error => {
+        //     console.log(error);
+        // })
+    }
+
     handleImageSelect = (e) => {
         if(this.state.reSelectImage) {
             fileObj = []
             fileArray = []
         }
-        fileObj.push(e.target.files)
-        for (let i = 0; i < fileObj[0].length; i++) {
-            fileArray.push(URL.createObjectURL(fileObj[0][i]))
+        var images = e.target.files
+        for(let i = 0; i < images.length; i++) {
+            // if(images[i].size > 10485760) {
+            //     this.compressImage(images[i])
+            //     .then((responce) => {
+            //         fileObj.push(responce)
+            //     })
+            //     .catch(error => {console.log(error)})
+            // } else {
+                fileObj.push(images[i])
+            //}
+        }
+        for (let i = 0; i < fileObj.length; i++) {
+            fileArray.push(URL.createObjectURL(fileObj[i]))
         }
         this.setState({
             selectedImages : fileArray,
@@ -37,21 +59,34 @@ class UploadImage extends Component {
     handleUploadButton = () => {
         fileArray = []
         fileObj = []
-        const image = this.state.images
-        this.state.selectedImages.map(selectedImage => { image.push(selectedImage) })
+        const images = this.state.images
+        this.state.selectedImages.map(selectedImage => { 
+            // DatabaseServices.addImage()
+            // .then(responce => {
+            //     console.log(responce);
+            // })
+            // .catch(error => {
+            //     console.log(error)
+            // })
+            images.push(selectedImage) 
+        })
         this.setState({
-            images : image,
+            images : images,
             value : '',
             selectedImages : [],
             reSelectImage : false
         })
     }
 
+    compressImage = (image) => {
+        console.log(image);
+    }
+
     render() {
         return(
             <div>
                 <div className = 'header-text-view'>
-                    <h1 className = 'header-text'>Add Image</h1>
+                    <h1 className = 'header-text'>Home work</h1>
                 </div>
                 <div className = 'card-view'>
                     <Card className = 'input-file-card'>
@@ -79,7 +114,10 @@ class UploadImage extends Component {
                     </Card>
                 </div>
                 <div>
-                    <ShowImage images = {this.state.images}/>
+                    {this.state.selectedImages.length != 0 && <ShowImage images = {this.state.selectedImages} type = {'Selected Images'}/>}
+                </div>
+                <div>
+                    {this.state.images.length != 0 && <ShowImage images = {this.state.images} type = {'Updated Images'}/>}
                 </div>
             </div>
         )
