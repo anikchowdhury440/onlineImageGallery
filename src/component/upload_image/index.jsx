@@ -15,18 +15,22 @@ class UploadImage extends Component {
             images : [],
             selectedImages : [],
             value : '',
-            reSelectImage : false
+            reSelectImage : false,
         }
     }
 
     componentDidMount = () => {
-        // DatabaseServices.getImages()
-        // .then(responce => {
-        //     console.log(responce);
-        // })
-        // .catch(error => {
-        //     console.log(error);
-        // })
+        let images = []
+        DatabaseServices.getImages()
+        .then(responce => {
+            if(responce.data.length != 0) {
+                responce.data.map(image => {
+                    images.push(`http://192.168.1.29:8000${image.image}`)
+                })
+                this.setState({ images : images })
+            }
+        })
+        .catch(error => {console.log(error);})
     }
 
     handleImageSelect = (e) => {
@@ -35,17 +39,11 @@ class UploadImage extends Component {
             fileArray = []
         }
         var images = e.target.files
+        console.log(e.target.value);
         for(let i = 0; i < images.length; i++) {
-            // if(images[i].size > 10485760) {
-            //     this.compressImage(images[i])
-            //     .then((responce) => {
-            //         fileObj.push(responce)
-            //     })
-            //     .catch(error => {console.log(error)})
-            // } else {
-                fileObj.push(images[i])
-            //}
+            fileObj.push(images[i])
         }
+        console.log(fileObj)
         for (let i = 0; i < fileObj.length; i++) {
             fileArray.push(URL.createObjectURL(fileObj[i]))
         }
@@ -57,18 +55,29 @@ class UploadImage extends Component {
     }
 
     handleUploadButton = () => {
-        fileArray = []
-        fileObj = []
         const images = this.state.images
-        this.state.selectedImages.map(selectedImage => { 
-            // DatabaseServices.addImage()
-            // .then(responce => {
-            //     console.log(responce);
-            // })
-            // .catch(error => {
-            //     console.log(error)
-            // })
-            images.push(selectedImage) 
+        // console.log(this.state.selectedImages);
+        // this.state.selectedImages.map((selectedImage, index) => { 
+        //     DatabaseServices.addImage(selectedImage)
+        //         .then(responce => {
+        //             console.log(selectedImage);
+        //             images.push(selectedImage)
+        //             console.log(responce);
+        //         })
+        //         .catch(error => {
+        //             console.log(error)
+        //         }) 
+        //})
+        console.log(fileObj)
+        fileObj.map((file) => {
+            console.log('file', file)
+            DatabaseServices.addImage(file)
+                    .then(responce => {
+                        console.log('responce', responce);
+                    })
+                    .catch(error => {
+                        console.log(error)
+                    })
         })
         this.setState({
             images : images,
@@ -76,6 +85,8 @@ class UploadImage extends Component {
             selectedImages : [],
             reSelectImage : false
         })
+        fileArray = []
+        fileObj = []
     }
 
     compressImage = (image) => {

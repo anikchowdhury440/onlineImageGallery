@@ -10,7 +10,7 @@ class DatabaseServices {
             let responce = fetch('http://192.168.1.29:8000/manageimages', options)
             responce.then(res => {
                 res.json().then(resp => {
-                    resolve(resp.data)
+                    resolve(resp)
                 }).catch(error => reject(error))
             })
             .catch(error => {
@@ -19,24 +19,22 @@ class DatabaseServices {
         })
     }
 
-    addImage = (imageDetails, index) => {
+    addImage = (imageDetails) => {
+        console.log('image', imageDetails.name);
         return new Promise(async (resolve, reject) => {
             let data = new FormData()
-            data.append('image', {
-                uri : imageDetails.path,
-                name : `images${index}.jpg`,
-                type : imageDetails.mime
-            })
-            data.append('name', `images${index}.jpg`)
+            data.append('image', imageDetails)
+            data.append('name', 'abc')
             let options = {
                 method: 'POST',
                 headers: {
-                    'Content-Type': 'multipart/form-data'
+                    'Content-Type': 'multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW'
                 },
                 body: data
             }
             let responce = fetch('http://192.168.1.29:8000/manageimages', options)
             responce.then(res => {
+                console.log('res', res)
                 res.json().then(resp => {
                     resolve(resp)
                 }).catch(error => reject(error))

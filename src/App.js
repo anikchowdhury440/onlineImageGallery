@@ -1,13 +1,13 @@
 import UploadImage from './component/upload_image'
-import SearchImages from './component/search-image/index'
+
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import Navbar from '../src/component/Navigation/navbar';
 import Home from './component/home/index';
+import SearchImages from './component/search-image';
 
 function App() {
   return (
     <div className="App">
-      {/* <UploadImage /> */}
       <BrowserRouter>
         <Navbar/>
         <Switch>

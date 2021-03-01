@@ -10,12 +10,16 @@ export default class Home extends Component {
         }
     }
     
-    getImages = () => {
+    componentDidMount = () => {
+        let images = []
         DatabaseServices.getImages()
         .then(responce => {
-            let images = []
-            images.push(responce)
-            this.setState({images: images})
+            if(responce.data.length != 0) {
+                responce.data.map(image => {
+                    images.push(`http://192.168.1.29:8000${image.image}`)
+                })
+                this.setState({ images : images })
+            }
         })
         .catch(error => {console.log(error);})
     }
@@ -23,7 +27,7 @@ export default class Home extends Component {
     render() {
         return(
             <div>
-                {this.state.images.length == 0 && <ShowImage images = {this.state.images} type = {'Your Images'}/>}
+                {this.state.images.length != 0 && <ShowImage images = {this.state.images} type = {'Your Images'}/>}
             </div>
         )
     }
