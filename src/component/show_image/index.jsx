@@ -6,9 +6,9 @@ const ShowImage = ({...props}) => {
     return (
         <div>
             <div className = 'heading'>
-                <text>{props.type}</text>
+                <h2>{props.type}</h2>
             </div>        
-            <GridList cellHeight={160} className='class-gridlist'>
+            <div>
                 {props.images.length != 0 && 
                     props.images.map((image, index) => (
                         <React.Fragment key = {index}>
@@ -16,7 +16,7 @@ const ShowImage = ({...props}) => {
                         </React.Fragment>
                     ))
                 }
-            </GridList>
+            </div>
         </div>
         // <div>
         //     { props.images.length != 0 && 

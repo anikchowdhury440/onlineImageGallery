@@ -10,10 +10,11 @@ export default class Home extends Component {
         }
     }
     
-    getImages = () => {
+    componentDidMount = () => {
         DatabaseServices.getImages()
         .then(responce => {
             let images = []
+            console.log(responce);
             images.push(responce)
             this.setState({images: images})
         })
